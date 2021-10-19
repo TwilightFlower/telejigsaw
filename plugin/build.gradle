@@ -1,0 +1,44 @@
+plugins {
+	id 'java-gradle-plugin'
+	id 'maven-publish'
+	id 'com.gradle.plugin-publish' version '0.14.0'
+}
+
+version = "0.1.0"
+
+repositories {
+	mavenCentral()
+	
+	maven {
+		name = "HalfOf2"
+		url = uri("https://storage.googleapis.com/devan-maven/")
+	}
+	maven { url 'https://maven.fabricmc.net/' }
+}
+
+dependencies {
+	implementation("amalgamation-minecraft:amalgamation-minecraft.gradle.plugin:2.1.0") {
+		exclude group: "net.minecraftforge"
+	}
+}
+
+gradlePlugin {
+	plugins {
+		quiltgradle {
+			id = 'org.quiltmc.gradle.quilt-gradle'
+			implementationClass = 'org.quiltmc.gradle.QuiltGradlePlugin'
+		}
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(16)
+	}
+}
+
+publishing {
+	repositories {
+		mavenLocal()
+	}
+}
