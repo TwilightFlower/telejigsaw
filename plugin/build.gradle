@@ -8,18 +8,21 @@ version = "0.1.0"
 
 repositories {
 	mavenCentral()
-	
+	mavenLocal()
 	maven {
 		name = "HalfOf2"
 		url = uri("https://storage.googleapis.com/devan-maven/")
 	}
 	maven { url 'https://maven.fabricmc.net/' }
+	maven { url 'https://maven.quiltmc.org/repository/release' }
 }
 
 dependencies {
-	implementation("amalgamation-minecraft:amalgamation-minecraft.gradle.plugin:2.1.0") {
+	implementation("amalgamation-minecraft:amalgamation-minecraft.gradle.plugin:2.1.2") {
 		exclude group: "net.minecraftforge"
 	}
+	
+	implementation "org.quiltmc:quiltflower:1.5.0"
 }
 
 gradlePlugin {

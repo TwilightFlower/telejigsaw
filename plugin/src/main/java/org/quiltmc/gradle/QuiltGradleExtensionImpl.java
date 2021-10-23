@@ -35,7 +35,6 @@ public class QuiltGradleExtensionImpl implements QuiltGradleExtension {
 			rd.mappings(mappings.dependency, mappings.intermediaryNamespace, mappings.mappedNamespace);
 			rd.remap(dep, true);
 		});
-		System.out.println(((AbstractSelfResolvingDependency) d).resolve());
 		return d; 
 	}
 	
@@ -49,11 +48,11 @@ public class QuiltGradleExtensionImpl implements QuiltGradleExtension {
 		Objects.requireNonNull(mcVers, "Must set a Minecraft version to depend on Minecraft");
 		Objects.requireNonNull(mappings.dependency, "Must set mappings to depend on Minecraft");
 		
-		Dependency mc = amalg.map(rd -> {
-			rd.mappings(mappings.dependency, mappings.obfNamespace, mappings.mappedNamespace);
-			rd.remap(amalg.mojmerged(mcVers), true);
+		var mc = (AbstractSelfResolvingDependency) amalg.map(rd -> {
+			var mt = rd.mappings(mappings.dependency, mappings.obfNamespace, mappings.mappedNamespace);
+			rd.remap(amalg.mojmerged(mcVers, mt), true);
 		});
 		
-		return new Dependency[] {mc, amalg.libraries(mcVers)};
+		return new Dependency[] {new MinecraftDependency(mc), amalg.libraries(mcVers)};
 	}
 }
