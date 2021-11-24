@@ -140,7 +140,7 @@ public class FernflowerIO implements IResultSaver, IBytecodeProvider, Runnable, 
 				try {
 					r.run();
 				} catch(IOException e) {
-					System.err.println("Error during decompilation: " + e.getMessage());
+					System.err.println(String.format("Error during decompilation: %s: %s", e.getClass().getSimpleName(), e.getLocalizedMessage()));
 				}
 			}
 		} catch(InterruptedException e) {

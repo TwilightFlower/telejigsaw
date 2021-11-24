@@ -5,7 +5,6 @@ import org.gradle.api.Project;
 
 import io.github.astrarre.amalgamation.gradle.plugin.minecraft.MinecraftAmalgamation;
 import io.github.twilightflower.telejigsaw.decomp.GenSourcesTask;
-import io.github.twilightflower.telejigsaw.eclipse.EclipseConfig;
 
 import java.util.Map;
 
@@ -16,7 +15,5 @@ public class TeleJigsawPlugin implements Plugin<Project> {
 		
 		project.getTasks().create("genSources", GenSourcesTask.class);
 		project.getExtensions().create(TeleJigsawExtension.class, "telejigsaw", TeleJigsawExtensionImpl.class, amalg);
-		
-		project.getPlugins().withId("eclipse", e -> EclipseConfig.configEclipse(project));
 	}
 }

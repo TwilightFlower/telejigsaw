@@ -1,11 +1,10 @@
 package io.github.twilightflower.telejigsaw;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import org.gradle.api.Action;
-import org.gradle.api.artifacts.Dependency;
-
-import io.github.astrarre.amalgamation.gradle.dependencies.AbstractSelfResolvingDependency;
 import io.github.astrarre.amalgamation.gradle.plugin.minecraft.MinecraftAmalgamation;
 
 public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
@@ -29,13 +28,16 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 	}
 	
 	@Override
-	public Dependency remap(Object dep) {
+	public Object remap(Object dep) {
 		Objects.requireNonNull(mappings.dependency, "Attempt to remap without setting mappings first");
-		Dependency d = amalg.map(rd -> {
-			rd.mappings(mappings.dependency, mappings.intermediaryNamespace, mappings.mappedNamespace);
-			rd.remap(dep, true);
-		});
-		return d; 
+		try {
+			return amalg.map(rd -> {
+				rd.mappings(mappings.dependency, mappings.intermediaryNamespace, mappings.mappedNamespace);
+				rd.inputGlobal(dep);
+			});
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
@@ -44,15 +46,20 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 	}
 
 	@Override
-	public Dependency[] getMinecraft() {
+	public Object getMinecraft() {
 		Objects.requireNonNull(mcVers, "Must set a Minecraft version to depend on Minecraft");
 		Objects.requireNonNull(mappings.dependency, "Must set mappings to depend on Minecraft");
 		
-		var mc = (AbstractSelfResolvingDependency) amalg.map(rd -> {
-			var mt = rd.mappings(mappings.dependency, mappings.obfNamespace, mappings.mappedNamespace);
-			rd.remap(amalg.mojmerged(mcVers, mt), true);
-		});
-		
-		return new Dependency[] {new MinecraftDependency(mc), amalg.libraries(mcVers)};
+		try {
+			List<?> mc = (List<?>) amalg.map(rd -> {
+				var mt = amalg.mappings(mappings.dependency, mappings.obfNamespace, mappings.mappedNamespace);
+				rd.mappings(mt);
+				rd.inputGlobal(amalg.mojmerged(mcVers, mt));
+			});
+			
+			return new Object[] {mc, amalg.libraries(mcVers)};
+		} catch(IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

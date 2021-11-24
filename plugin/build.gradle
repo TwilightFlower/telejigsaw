@@ -15,10 +15,11 @@ repositories {
 	}
 	maven { url 'https://maven.fabricmc.net/' }
 	maven { url 'https://maven.quiltmc.org/repository/release' }
+	maven { url 'https://maven.hydos.cf/releases/' }
 }
 
 dependencies {
-	implementation("amalgamation-minecraft:amalgamation-minecraft.gradle.plugin:2.1.2") {
+	implementation("io.github.astrarre.amalgamation:gradle-plugin:2.2.1") {
 		exclude group: "net.minecraftforge"
 	}
 	
