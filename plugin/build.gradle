@@ -1,9 +1,11 @@
 plugins {
 	id 'java-gradle-plugin'
 	id 'maven-publish'
-	id 'com.gradle.plugin-publish' version '0.14.0'
+	id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
+group = "io.github.twilightflower.telejigsaw"
+archivesBaseName = "telejigsaw"
 version = "0.1.0"
 
 repositories {
@@ -18,20 +20,29 @@ repositories {
 	maven { url 'https://maven.hydos.cf/releases/' }
 }
 
+configurations {
+	shade
+}
+
 dependencies {
-	implementation("io.github.astrarre.amalgamation:gradle-plugin:2.3.0") {
+	shade implementation("io.github.astrarre.amalgamation:gradle-plugin:2.3.0") {
 		exclude group: "net.minecraftforge"
 	}
 	
-	implementation "org.quiltmc:quiltflower:1.5.0"
+	shade implementation("org.quiltmc:quiltflower:1.5.0")
+}
+
+shadowJar {
+	configurations = [project.configurations.shade]
 }
 
 gradlePlugin {
 	plugins {
 		telejigsaw {
-			id = 'io.github.twilightflower.telejigsaw'
+			id = 'telejigsaw'
 			implementationClass = 'io.github.twilightflower.telejigsaw.TeleJigsawPlugin'
 		}
+		automatedPublishing = false
 	}
 }
 
@@ -39,10 +50,31 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(16)
 	}
+	
+	withSourcesJar()
 }
 
 publishing {
 	repositories {
 		mavenLocal()
+	}
+	
+	publications {
+		pluginHack(MavenPublication) {
+			groupId = "telejigsaw"
+			artifactId = "telejigsaw.gradle.plugin"
+			
+			artifact(shadowJar) {
+				classifier = ''
+				builtBy shadowJar
+			}
+		}
+		
+		maven(MavenPublication) {
+			groupId = "io.github.twilightflower"
+			artifactId = "telejigsaw"
+			
+			from components.java
+		}
 	}
 }
