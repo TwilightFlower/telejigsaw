@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.decomp;
+package io.github.twilightflower.telejigsaw.decomp;
 
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -24,8 +24,9 @@ import java.util.jar.Manifest;
 
 import org.jetbrains.java.decompiler.main.extern.IBytecodeProvider;
 import org.jetbrains.java.decompiler.main.extern.IResultSaver;
-import org.quiltmc.gradle.util.Util;
-import org.quiltmc.gradle.util.Util.ExceptionRunnable;
+
+import io.github.twilightflower.telejigsaw.util.Util;
+import io.github.twilightflower.telejigsaw.util.Util.ExceptionRunnable;
 
 public class FernflowerIO implements IResultSaver, IBytecodeProvider, Runnable, Closeable, AutoCloseable {
 	private static final ExceptionRunnable<IOException> SIGNAL = () -> {}; // used to signal termination.

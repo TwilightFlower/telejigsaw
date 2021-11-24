@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.decomp;
+package io.github.twilightflower.telejigsaw.decomp;
 
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 

@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.util;
+package io.github.twilightflower.telejigsaw.util;
 
 import java.util.function.Function;
 

@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.decomp;
+package io.github.twilightflower.telejigsaw.decomp;
 
 import java.io.File;
 import java.io.IOException;

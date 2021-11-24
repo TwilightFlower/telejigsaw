@@ -27,9 +27,9 @@ dependencies {
 
 gradlePlugin {
 	plugins {
-		quiltgradle {
-			id = 'org.quiltmc.gradle.quilt-gradle'
-			implementationClass = 'org.quiltmc.gradle.QuiltGradlePlugin'
+		telejigsaw {
+			id = 'io.github.twilightflower.telejigsaw'
+			implementationClass = 'io.github.twilightflower.telejigsaw.TeleJigsawPlugin'
 		}
 	}
 }

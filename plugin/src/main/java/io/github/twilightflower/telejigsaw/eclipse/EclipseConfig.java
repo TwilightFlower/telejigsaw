@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.eclipse;
+package io.github.twilightflower.telejigsaw.eclipse;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,14 +9,15 @@ import org.gradle.plugins.ide.eclipse.model.Classpath;
 import org.gradle.plugins.ide.eclipse.model.ClasspathEntry;
 import org.gradle.plugins.ide.eclipse.model.EclipseModel;
 import org.gradle.plugins.ide.eclipse.model.Library;
-import org.quiltmc.gradle.MinecraftDependency;
-import org.quiltmc.gradle.QuiltGradleExtension;
+
+import io.github.twilightflower.telejigsaw.MinecraftDependency;
+import io.github.twilightflower.telejigsaw.TeleJigsawExtension;
 
 public class EclipseConfig {
 	public static void configEclipse(Project proj) {
 		System.out.println("yeeee");
 		var eclipse = proj.getExtensions().getByType(EclipseModel.class);
-		var quilt = proj.getExtensions().getByType(QuiltGradleExtension.class);
+		var quilt = proj.getExtensions().getByType(TeleJigsawExtension.class);
 		// why is this necessary? something calls setWhenMerged! Thanks gradle
 		proj.afterEvaluate(p -> {
 			eclipse.getClasspath().getFile().whenMerged(c -> {

@@ -1,9 +1,9 @@
-package org.quiltmc.gradle;
+package io.github.twilightflower.telejigsaw;
 
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.Dependency;
 
-public interface QuiltGradleExtension {
+public interface TeleJigsawExtension {
 	void minecraft(String version);
 	void mappings(Action<MappingInfo> act);
 	void mappings(Object o);

@@ -1,4 +1,4 @@
-package org.quiltmc.gradle;
+package io.github.twilightflower.telejigsaw;
 
 public class MappingInfo {
 	public Object dependency;

@@ -1,4 +1,4 @@
-package org.quiltmc.gradle;
+package io.github.twilightflower.telejigsaw;
 
 import java.util.Objects;
 
@@ -8,12 +8,12 @@ import org.gradle.api.artifacts.Dependency;
 import io.github.astrarre.amalgamation.gradle.dependencies.AbstractSelfResolvingDependency;
 import io.github.astrarre.amalgamation.gradle.plugin.minecraft.MinecraftAmalgamation;
 
-public class QuiltGradleExtensionImpl implements QuiltGradleExtension {
+public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 	private final MinecraftAmalgamation amalg;
 	private String mcVers;
 	private MappingInfo mappings = new MappingInfo();
 	
-	public QuiltGradleExtensionImpl(MinecraftAmalgamation amalg) {
+	public TeleJigsawExtensionImpl(MinecraftAmalgamation amalg) {
 		this.amalg = amalg;
 	}
 	

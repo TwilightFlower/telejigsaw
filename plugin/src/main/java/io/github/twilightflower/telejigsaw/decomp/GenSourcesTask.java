@@ -1,4 +1,4 @@
-package org.quiltmc.gradle.decomp;
+package io.github.twilightflower.telejigsaw.decomp;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -11,11 +11,11 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.workers.WorkQueue;
 import org.gradle.workers.WorkerExecutor;
 import org.jetbrains.java.decompiler.main.Fernflower;
-import org.quiltmc.gradle.MinecraftDependency;
-import org.quiltmc.gradle.QuiltGradleExtension;
-import org.quiltmc.gradle.util.Util;
 
 import io.github.astrarre.amalgamation.gradle.dependencies.LibrariesDependency;
+import io.github.twilightflower.telejigsaw.MinecraftDependency;
+import io.github.twilightflower.telejigsaw.TeleJigsawExtension;
+import io.github.twilightflower.telejigsaw.util.Util;
 
 public abstract class GenSourcesTask extends DefaultTask {
 	@Inject
@@ -24,7 +24,7 @@ public abstract class GenSourcesTask extends DefaultTask {
 	@TaskAction
 	public void decompile() {
 		Project project = getProject();
-		var ext = project.getExtensions().getByType(QuiltGradleExtension.class);
+		var ext = project.getExtensions().getByType(TeleJigsawExtension.class);
 		Dependency[] mcDeps = ext.getMinecraft();
 		var mc = (MinecraftDependency) mcDeps[0];
 		var libs = (LibrariesDependency) mcDeps[1];
