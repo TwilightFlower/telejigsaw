@@ -16,7 +16,6 @@ import org.gradle.workers.WorkQueue;
 import org.gradle.workers.WorkerExecutor;
 import org.jetbrains.java.decompiler.main.Fernflower;
 
-import io.github.astrarre.amalgamation.gradle.dependencies.AbstractSelfResolvingDependency;
 import io.github.twilightflower.telejigsaw.TeleJigsawExtension;
 import io.github.twilightflower.telejigsaw.util.Util;
 
@@ -30,16 +29,21 @@ public abstract class GenSourcesTask extends DefaultTask {
 		var ext = project.getExtensions().getByType(TeleJigsawExtension.class);
 		Object[] mcDeps = (Object[]) ext.getMinecraft();
 		var mc = (List<?>) mcDeps[0];
-		var libs = (AbstractSelfResolvingDependency) mcDeps[1];
+		var libs = (List<?>) mcDeps[1];
 		
-		Dependency[] deps = new Dependency[mc.size()];
-		for(int i = 0; i < deps.length; i++) {
-			deps[i] = project.getDependencies().create(mc.get(i));
+		Dependency[] mcAsDeps = new Dependency[mc.size()];
+		for(int i = 0; i < mcAsDeps.length; i++) {
+			mcAsDeps[i] = project.getDependencies().create(mc.get(i));
 		}
 		
-		Set<File> libsResolved = libs.resolve();
+		Dependency[] libsAsDeps = new Dependency[libs.size()];
+		for(int i = 0; i < libsAsDeps.length; i++) {
+			libsAsDeps[i] = project.getDependencies().create(mc.get(i));
+		}
 		
-		Set<File> mcResolved = project.getConfigurations().detachedConfiguration(deps).resolve();
+		Set<File> mcResolved = project.getConfigurations().detachedConfiguration(mcAsDeps).resolve();
+		Set<File> libsResolved = project.getConfigurations().detachedConfiguration(libsAsDeps).resolve();
+		
 		Path mcPath = mcResolved.iterator().next().toPath();
 		String mcFName = mcPath.getFileName().toString();
 		String srcFName = mcFName.substring(0, mcFName.length() - ".jar".length()) + "-sources.jar";

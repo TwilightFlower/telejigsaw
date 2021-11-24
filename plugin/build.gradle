@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	implementation("io.github.astrarre.amalgamation:gradle-plugin:2.2.1") {
+	implementation("io.github.astrarre.amalgamation:gradle-plugin:2.3.0") {
 		exclude group: "net.minecraftforge"
 	}
 	
