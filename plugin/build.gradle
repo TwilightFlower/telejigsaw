@@ -2,6 +2,7 @@ plugins {
 	id 'java-gradle-plugin'
 	id 'maven-publish'
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
+	id 'org.cadixdev.licenser' version '0.6.1'
 }
 
 group = "io.github.twilightflower.telejigsaw"
@@ -17,7 +18,6 @@ repositories {
 	}
 	maven { url 'https://maven.fabricmc.net/' }
 	maven { url 'https://maven.quiltmc.org/repository/release' }
-	maven { url 'https://maven.hydos.cf/releases/' }
 }
 
 configurations {
@@ -25,11 +25,9 @@ configurations {
 }
 
 dependencies {
-	shade implementation("io.github.astrarre.amalgamation:gradle-plugin:2.3.0") {
+	shade implementation("io.github.astrarre.amalgamation:amalgamation:1.0.0.3") {
 		exclude group: "net.minecraftforge"
 	}
-	
-	shade implementation("org.quiltmc:quiltflower:1.5.0")
 }
 
 shadowJar {
