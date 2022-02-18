@@ -1,3 +1,4 @@
 rootProject.name = 'telejigsaw'
 
 include 'plugin'
+include 'dli'

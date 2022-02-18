@@ -19,7 +19,6 @@
 package io.github.twilightflower.telejigsaw;
 
 import org.gradle.api.Action;
-
 import io.github.astrarre.amalgamation.gradle.tasks.remap.RemapJar;
 import io.github.astrarre.amalgamation.gradle.tasks.remap.RemapSourcesJar;
 
@@ -30,10 +29,11 @@ public interface TeleJigsawExtension {
 	void fernflower(Object dep);
 	Object remap(Object dep);
 	Object getMinecraft();
-	RemapJar remapJar(String name, Action<RemapJar> action);
-	RemapSourcesJar remapSourcesJar(String name, Action<RemapSourcesJar> action);
+	RemapJar remapJar(String name, Action<? super RemapJar> action);
+	RemapSourcesJar remapSourcesJar(String name, Action<? super RemapSourcesJar> action);
+	void launches(Action<? super Launches> launches);
 	
-	default RemapJar remapJar(Action<RemapJar> action) {
+	default RemapJar remapJar(Action<? super RemapJar> action) {
 		return remapJar("remapJar", action);
 	}
 	default RemapJar remapJar() {
@@ -43,7 +43,7 @@ public interface TeleJigsawExtension {
 		return remapJar(name, r -> {});
 	}
 	
-	default RemapSourcesJar remapSourcesJar(Action<RemapSourcesJar> action) {
+	default RemapSourcesJar remapSourcesJar(Action<? super RemapSourcesJar> action) {
 		return remapSourcesJar("remapSourcesJar", action);
 	}
 	default RemapSourcesJar remapSourcesJar(String name) {

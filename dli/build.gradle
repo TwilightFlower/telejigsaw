@@ -1,0 +1,27 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'org.cadixdev.licenser' version '0.6.1'
+}
+
+group = "io.github.twilightflower.telejigsaw"
+archivesBaseName = "dli";
+version = "1.0.0"
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+	withSourcesJar()
+}
+
+publishing {
+	repositories {
+		mavenLocal()
+	}
+	publications {
+		maven(MavenPublication) {
+			from components.java
+		}
+	}
+}

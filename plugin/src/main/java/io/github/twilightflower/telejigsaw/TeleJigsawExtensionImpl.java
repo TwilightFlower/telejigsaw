@@ -19,6 +19,9 @@
 package io.github.twilightflower.telejigsaw;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import org.gradle.api.Action;
@@ -32,9 +35,11 @@ import io.github.astrarre.amalgamation.gradle.tasks.remap.RemapSourcesJar;
 public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 	private final MinecraftAmalgamation amalg;
 	private final Project project;
+	final LaunchesImpl launches = new LaunchesImpl();
 	private String mcVers;
 	private MappingInfo mappings = new MappingInfo();
 	private Object fernflower = "org.quiltmc:quiltflower:1.7.0";
+	private boolean addedDli = false;
 	
 	public TeleJigsawExtensionImpl(MinecraftAmalgamation amalg, Project project) {
 		this.amalg = amalg;
@@ -102,7 +107,7 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 	}
 
 	@Override
-	public RemapJar remapJar(String name, Action<RemapJar> action) {
+	public RemapJar remapJar(String name, Action<? super RemapJar> action) {
 		RemapJar task = project.getTasks().create(name, RemapJar.class);
 		task.setGroup("build");
 		task.getClasspath().set(project.getConfigurations().getAt("compileClasspath"));
@@ -116,7 +121,8 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 		return task;
 	}
 	
-	public RemapSourcesJar remapSourcesJar(String name, Action<RemapSourcesJar> action) {
+	@Override
+	public RemapSourcesJar remapSourcesJar(String name, Action<? super RemapSourcesJar> action) {
 		Task sourcesJarTask = project.getTasks().getAt("sourcesJar");
 		RemapSourcesJar task = project.getTasks().create(name, RemapSourcesJar.class);
 		task.setGroup("build");
@@ -127,5 +133,27 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 		task.dependsOn(sourcesJarTask);
 		action.execute(task);
 		return task;
+	}
+	
+	@Override
+	public void launches(Action<? super Launches> action) {
+		action.execute(launches);
+		Path launchesLoc = project.getProjectDir().toPath().resolve(".gradle").resolve("telejigsaw").resolve("dli.txt");
+		Path runDir = project.getProjectDir().toPath().resolve("run");
+		try {
+			Files.createDirectories(runDir);
+			Files.createDirectories(launchesLoc.getParent());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		try(PrintStream out = new PrintStream(Files.newOutputStream(launchesLoc))) {
+			launches.write(out, "");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if(!addedDli) {
+			addedDli = true;
+			project.getDependencies().add("runtimeClasspath", "io.github.twilightflower.telejigsaw:dli:1.0.0");
+		}
 	}
 }

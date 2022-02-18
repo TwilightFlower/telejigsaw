@@ -7,7 +7,7 @@ plugins {
 
 group = "io.github.twilightflower.telejigsaw"
 archivesBaseName = "telejigsaw"
-version = "0.1.0"
+version = rootProject.version
 
 repositories {
 	mavenCentral()
@@ -61,6 +61,7 @@ publishing {
 		pluginHack(MavenPublication) {
 			groupId = "telejigsaw"
 			artifactId = "telejigsaw.gradle.plugin"
+			version = project.version
 			
 			artifact(shadowJar) {
 				classifier = ''

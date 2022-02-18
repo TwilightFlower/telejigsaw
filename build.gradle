@@ -1,3 +1,5 @@
 allprojects {
 	apply plugin: 'eclipse'
 }
+
+project.version = "0.1.0"
