@@ -32,6 +32,7 @@ public interface TeleJigsawExtension {
 	RemapJar remapJar(String name, Action<? super RemapJar> action);
 	RemapSourcesJar remapSourcesJar(String name, Action<? super RemapSourcesJar> action);
 	void launches(Action<? super Launches> launches);
+	void fumo();
 	
 	default RemapJar remapJar(Action<? super RemapJar> action) {
 		return remapJar("remapJar", action);

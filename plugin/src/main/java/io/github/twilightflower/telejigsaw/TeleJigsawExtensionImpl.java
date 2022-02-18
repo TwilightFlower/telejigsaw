@@ -156,4 +156,25 @@ public class TeleJigsawExtensionImpl implements TeleJigsawExtension {
 			project.getDependencies().add("runtimeClasspath", "io.github.twilightflower.telejigsaw:dli:1.0.0");
 		}
 	}
+	
+	@Override
+	public void fumo() {
+		launches(l -> {
+			l.all(p -> {
+				p.mainClass("io.github.twilightflower.fumo.bootstrap.Main");
+				p.property("fumo.minecraft.dev", "true");
+				p.property("fumo.minecraft.runtimemappings", mappings.mappedNamespace);
+			});
+			l.profile("client", p -> {
+				p.property("fumo.minecraft.side", "client");
+				p.arg("--version");
+				p.arg(mcVers);
+				p.arg("--accessToken");
+				p.arg("nocrash");
+			});
+			l.profile("server", p -> {
+				p.property("fumo.minecraft.version", mcVers);
+			});
+		});
+	}
 }
